@@ -1,28 +1,35 @@
-PYTHON = python3
-PIP = pip3
-SCRIPT = dslr.py
+PYTHON = ./venv/bin/python3
+PIP = ./venv/bin/pip
 
-.PHONY: all install run debug lint test clean
+.PHONY: all install describe histogram scatter_plot pair_plot train predict clean
 
 all: install
 
 install:
+	python3 -m venv venv
 	$(PIP) install pandas numpy matplotlib
 
-run:
-	$(PYTHON) $(SCRIPT)
+describe:
+	$(PYTHON) describe.py $(ARGS)
 
-debug:
-	$(PYTHON) -m pdb $(SCRIPT)
+histogram:
+	$(PYTHON) histogram.py $(ARGS)
 
-lint:
-	$(PIP) install --quiet flake8
-	flake8 *.py
+scatter_plot:
+	$(PYTHON) scatter_plot.py $(ARGS)
 
-test:
-	$(PYTHON) -m pytest
+pair_plot:
+	$(PYTHON) pair_plot.py $(ARGS)
+
+train:
+	$(PYTHON) logreg_train.py $(ARGS)
+
+predict:
+	$(PYTHON) logreg_predict.py $(ARGS)
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
+
+fclean: clean
+	rm -rf venv
