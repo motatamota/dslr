@@ -1,0 +1,4 @@
+*.pdf
+*_test.py
+datasets/
+tmp
